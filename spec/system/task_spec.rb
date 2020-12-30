@@ -64,7 +64,7 @@ RSpec.describe 'Task', type: :system do
         fill_in 'Deadline', with: Time.current
         click_button 'Update Task'
         click_link 'Back'
-        expect(find('.task_list')).to have_content(Time.current.strftime('%m/%d %H:%M'))
+        expect(find('.task_list')).to have_content(Time.current.strftime('%m/%d %-H:%M'))
         expect(current_path).to eq project_tasks_path(project)
       end
 
@@ -79,7 +79,7 @@ RSpec.describe 'Task', type: :system do
         expect(current_path).to eq project_task_path(project, task)
       end
 
-      fit '既にステータスが完了のタスクのステータスを変更した場合、Taskの完了日が更新されないこと' do
+      it '既にステータスが完了のタスクのステータスを変更した場合、Taskの完了日が更新されないこと' do
         # TODO: FactoryBotのtraitを利用してください
         task = FactoryBot.create(:task, :done_task, project_id: project.id)
         visit edit_project_task_path(project, task)
