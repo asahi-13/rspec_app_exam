@@ -95,7 +95,7 @@ RSpec.describe 'Task', type: :system do
   describe 'Task削除' do
     context '正常系' do
       # FIXME: テストが失敗するので修正してください
-      xit 'Taskが削除されること' do
+      it 'Taskが削除されること' do
         task = FactoryBot.create(:task, project_id: project.id)
         visit project_tasks_path(project)
         click_link 'Destroy'
