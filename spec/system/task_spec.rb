@@ -1,11 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe 'Task', type: :system do
+  let(:project) { create(:project) }
+
   describe 'Task一覧' do
     context '正常系' do
       it '一覧ページにアクセスした場合、Taskが表示されること' do
         # TODO: ローカル変数ではなく let を使用してください
-        project = FactoryBot.create(:project)
         task = FactoryBot.create(:task, project_id: project.id)
         visit project_tasks_path(project)
         expect(page).to have_content task.title
@@ -15,7 +16,6 @@ RSpec.describe 'Task', type: :system do
 
       xit 'Project詳細からTask一覧ページにアクセスした場合、Taskが表示されること' do
         # FIXME: テストが失敗するので修正してください
-        project = FactoryBot.create(:project)
         task = FactoryBot.create(:task, project_id: project.id)
         visit project_path(project)
         click_link 'View Todos'
@@ -30,7 +30,6 @@ RSpec.describe 'Task', type: :system do
     context '正常系' do
       it 'Taskが新規作成されること' do
         # TODO: ローカル変数ではなく let を使用してください
-        project = FactoryBot.create(:project)
         visit project_tasks_path(project)
         click_link 'New Task'
         fill_in 'Title', with: 'test'
@@ -46,7 +45,6 @@ RSpec.describe 'Task', type: :system do
     context '正常系' do
       it 'Taskが表示されること' do
         # TODO: ローカル変数ではなく let を使用してください
-        project = FactoryBot.create(:project)
         task = FactoryBot.create(:task, project_id: project.id)
         visit project_task_path(project, task)
         expect(page).to have_content(task.title)
@@ -61,7 +59,6 @@ RSpec.describe 'Task', type: :system do
     context '正常系' do
       xit 'Taskを編集した場合、一覧画面で編集後の内容が表示されること' do
         # FIXME: テストが失敗するので修正してください
-        project = FactoryBot.create(:project)
         task = FactoryBot.create(:task, project_id: project.id)
         visit edit_project_task_path(project, task)
         fill_in 'Deadline', with: Time.current
@@ -73,7 +70,6 @@ RSpec.describe 'Task', type: :system do
 
       it 'ステータスを完了にした場合、Taskの完了日に今日の日付が登録されること' do
         # TODO: ローカル変数ではなく let を使用してください
-        project = FactoryBot.create(:project)
         task = FactoryBot.create(:task, project_id: project.id)
         visit edit_project_task_path(project, task)
         select 'done', from: 'Status'
@@ -85,7 +81,6 @@ RSpec.describe 'Task', type: :system do
 
       it '既にステータスが完了のタスクのステータスを変更した場合、Taskの完了日が更新されないこと' do
         # TODO: FactoryBotのtraitを利用してください
-        project = FactoryBot.create(:project)
         task = FactoryBot.create(:task, project_id: project.id, status: :done, completion_date: Time.current.yesterday)
         visit edit_project_task_path(project, task)
         select 'todo', from: 'Status'
@@ -101,7 +96,6 @@ RSpec.describe 'Task', type: :system do
     context '正常系' do
       # FIXME: テストが失敗するので修正してください
       xit 'Taskが削除されること' do
-        project = FactoryBot.create(:project)
         task = FactoryBot.create(:task, project_id: project.id)
         visit project_tasks_path(project)
         click_link 'Destroy'
